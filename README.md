@@ -18,6 +18,8 @@ and an accompanying system service which executes it automatically on shutdown.
 
 ## Step One: Creating the Script
 
+### Create the script
+
 First, we are going to create the script that will execute on shutdown.
 We are not going to worry at this point what actions we ultimately want the
 script to perform. For now, our script is just going to contain a single `echo`
@@ -43,6 +45,8 @@ echo Performing system cleanup...
 Write out (aka save) the file with `Ctrl`+`O` followed by `Enter`,
 then exit nano with `Ctrl`+`X`.
 
+### Make the script executable
+
 Finally, we need to make the script executable. From the terminal, run:
 
 ```
@@ -53,6 +57,8 @@ And we are done! Our script does not do anything useful right now, but we will
 address that in a later step.
 
 ## Step Two: Creating the System Service
+
+### Create the service
 
 Now we are going to create the system service to execute our script on
 shutdown. This service **must** be placed in `/etc/systemd/system`. As before,
@@ -83,6 +89,8 @@ WantedBy=shutdown.target
 Write out (aka save) the file with `Ctrl`+`O` followed by `Enter`,
 then exit nano with `Ctrl`+`X`.
 
+### Enable the service
+
 Next, we need to reload the systemd manager configuration to make it aware of
 our new system service. From the terminal, run:
 
@@ -102,7 +110,58 @@ verify everything is working properly.
 
 ## Step Three: Verifying Operation
 
+### Verify the script
 
+Verify the script works correctly by running it from the terminal:
+
+```
+/usr/local/bin/shutdown-cleanup.sh
+```
+
+You should see the output from our `echo` statement:
+
+```
+Performing system cleanup...
+```
+
+### Verify the system service status
+
+Next, show the runtime status information of our system service:
+
+```
+systemctl status shutdown-cleanup.service
+```
+
+You should see the following output:
+
+```
+○ shutdown-cleanup.service - Shutdown Cleanup Service
+     Loaded: loaded (/etc/systemd/system/shutdown-cleanup.service; enabled; preset: disabled)
+     Active: inactive (dead)
+```
+
+### Verify proper operation
+
+Finally, we are going to reboot our system to make sure the script executes on
+shutdown. After the system has rebooted, we will verify that the system service
+successfully executed the script by checking the systemd journal.
+
+Once you have rebooted your system, from the terminal run:
+
+```
+journalctl -u shutdown-cleanup
+```
+
+You should see output similar to the following:
+
+```
+May 17 14:20:17 hostname systemd[1]: Starting Shutdown Cleanup Service...
+May 17 14:20:17 hostname shutdown-cleanup.sh[3168]: Performing system cleanup...
+May 17 14:20:17 hostname systemd[1]: Finished Shutdown Cleanup Service.
+```
+
+Now that we have verified everything works correctly, we are finally ready to
+make our script useful!
 
 ## Step Four: Customize!
 
