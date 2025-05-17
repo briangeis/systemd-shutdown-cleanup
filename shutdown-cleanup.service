@@ -1,0 +1,12 @@
+[Unit]
+Description=Shutdown Cleanup Service
+DefaultDependencies=no
+Before=shutdown.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/shutdown-cleanup.sh
+RemainAfterExit=true
+
+[Install]
+WantedBy=shutdown.target
