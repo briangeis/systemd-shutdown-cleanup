@@ -1,3 +1,11 @@
+###############################################################################
+# Service name:   shutdown-cleanup.service
+# Description:    A shutdown system service for systemd-based Linux distros
+# Author:         Brian Geis
+# GitHub:         https://github.com/briangeis/systemd-shutdown-cleanup
+# Copyright:      GNU General Public License v3.0
+###############################################################################
+
 [Unit]
 Description=Shutdown Cleanup Service
 DefaultDependencies=no
