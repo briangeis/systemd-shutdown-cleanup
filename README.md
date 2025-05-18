@@ -1,7 +1,7 @@
 # **systemd-shutdown-cleanup**
 
-Tutorial on how to create a system service to perform shutdown cleanup tasks
-on systemd-based Linux distros.
+Tutorial on how to create a shutdown cleanup system service on
+systemd-based Linux distros.
 
 ## Overview
 
@@ -11,10 +11,10 @@ trigger automatically when a system event occurs. Which is why it comes as no
 surprise a common question I read online is: *how do I create a cleanup script
 that runs on shutdown?*
 
-On systemd-based Linus distros the method to accomplish this task is not
+On systemd-based Linux distros the method to accomplish this task is not
 immediately obvious or intuitive if you are not familiar with how systemd
 works. The goal of this tutorial is to help you create your own cleanup script
-and an accompanying system service which executes it automatically on shutdown.
+with an accompanying system service to execute it automatically on shutdown.
 
 ## Step One: Creating the Script
 
@@ -136,15 +136,15 @@ You should see the following output:
 
 ```
 ○ shutdown-cleanup.service - Shutdown Cleanup Service
-     Loaded: loaded (/etc/systemd/system/shutdown-cleanup.service; enabled; preset: disabled)
-     Active: inactive (dead)
+    Loaded: loaded (/etc/systemd/system/shutdown-cleanup.service; enabled; preset: disabled)
+    Active: inactive (dead)
 ```
 
 ### Verify proper operation
 
-Finally, we are going to reboot our system to make sure the script executes on
-shutdown. After the system has rebooted, we will verify that the system service
-successfully executed the script by checking the systemd journal.
+Finally, we are going to reboot our system to make sure everything works as
+expected. After the system has rebooted, we will verify successful execution
+of the script by checking the systemd journal.
 
 Once you have rebooted your system, from the terminal run:
 
@@ -165,7 +165,34 @@ make our script useful!
 
 ## Step Four: Customize!
 
+Now it is time to add functionality to your shutdown script. What you need or
+want your script to do is ultimately up to you. However, when creating your
+script there are a few things you should keep in mind:
 
+* **Use absolute paths when referencing your home directory.**\
+When your script is executed during shutdown, you will be logged out as a user.
+This means that both the environment variable `$HOME` and tilde expansion `~/`
+*will not* reference your home directory.
+
+* **Avoid using commands which could require user interaction.**\
+If a command in your script could encounter a scenario where it would require
+user input to proceed, you risk creating a situation where a shutdown or reboot
+will hang. Setting appropriate options for commands or adding script logic can
+avoid this.
+
+* **Suppress unwanted output to the systemd log with `/dev/null`.**\
+Commands often provide useful output when run. However, you may wish to
+suppress this output in your shutdown script to keep the systemd journal free
+from clutter. You can accomplish this by redirecting output to `/dev/null`.
+
+Here is a sample script to illustrate these points:
+
+```bash
+#!/bin/bash
+
+# Output a message to systemd log
+echo Performing system cleanup...
+```
 
 ## License
 
