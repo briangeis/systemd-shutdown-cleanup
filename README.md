@@ -3,6 +3,16 @@
 Tutorial on how to create a shutdown cleanup system service on
 systemd-based Linux distros.
 
+## Table of Contents
+
+* [Overview](#overview)
+* [Step One: Creating the Script](#step-one-creating-the-script)
+* [Step Two: Creating the System Service](#step-two-creating-the-system-service)
+* [Step Three: Verifying Operation](#step-three-verifying-operation)
+* [Step Four: Customize!](#step-four-customize)
+* [License](#license)
+* [References](#references)
+
 ## Overview
 
 Shell scripting languages offer us a powerful tool to create scripts which
