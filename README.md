@@ -219,5 +219,6 @@ GNU General Public License v3.0
 
 ## References
 
+[freedesktop.org - systemd Service Unit Configuration](https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html)
 
-
+[Red Hat Documentation - Managing Services with systemd](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/7/html/system_administrators_guide/chap-managing_services_with_systemd)
